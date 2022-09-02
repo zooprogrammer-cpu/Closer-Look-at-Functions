@@ -1,35 +1,32 @@
-
-// passing arguements - value vs reference
-const flight = 'LH234'
-const jonas = {
-    name: 'Jonas Smith',
-    passport : 23444343434
+// Function accepting callback functions
+const oneWord = function (str){
+    return str.replace(/ /g, '').toLowerCase()
 };
 
-const checkIn = function(flightNum, passenger){
-    flightNum = 'LH999';
-    passenger.name = 'Mr.' + passenger.name
-
-    if (passenger.passport === 23444343434){
-        alert('Checked in')
-    } else{
-        alert("Wrong passport")
-    }
+const upperFirstWord = function(str){
+    const [first, ...others] = str.split(' ')
+    return [first.toUpperCase(), ...others].join(' ');
 }
 
-// checkIn(flight, jonas)
-// console.log(flight); // prints LH234. Note here that flight which is a primitive did not change value
-// console.log(jonas); // this changed to "Mr. Jonas Smith"
+// Higher Order Function 
+const transformer = function (str,fn){
+    console.log(`Original string: ${str}`);
+    console.log(`Transformed string: ${fn(str)}`);
 
-// This is the same as doing
-// const flightNum = flight // this just copies the value
-// const passenger = jonas  // copying the reference in the heap. both point to same object.
-
-//This can cause problems when multiple developers are working
-
-const newPassport = function(person){
-    person.passport = Math.trunc(Math.random()) * 100000000000
+    console.log(`Transformed by: ${fn.name}`); 
 }
-// Two functions are manipluating the same object causing issues
-newPassport(jonas) // this changes the passport for jonas object
-checkIn(flight, jonas) // passes the jonas object with the altered passport value
+// transform this string using the upperFirstWord function 
+transformer('JavaScript is the best', upperFirstWord)
+//prints
+//Original string: JavaScript is the best
+//Transformed string: JAVASCRIPT is the best
+// Transformed by: upperFirstWord. prints the name of the function
+
+transformer('JavaScript is the best', oneWord)
+
+const high5 = function(){
+    console.log('🖐');
+}
+
+document.body.addEventListener('click', high5)
+
