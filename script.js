@@ -1,32 +1,21 @@
-// Function accepting callback functions
-const oneWord = function (str){
-    return str.replace(/ /g, '').toLowerCase()
-};
+// Functions returning functions
+// works due to closure
 
-const upperFirstWord = function(str){
-    const [first, ...others] = str.split(' ')
-    return [first.toUpperCase(), ...others].join(' ');
-}
+// const greet = function(greeting){
+//     return function(name){
+//         console.log(`${greeting} ${name}`);
+//     }
+// }
+// const greeterHey = greet('Hey');
+// greeterHey('Jonas')
+// greeterHey('Steven')
 
-// Higher Order Function 
-const transformer = function (str,fn){
-    console.log(`Original string: ${str}`);
-    console.log(`Transformed string: ${fn(str)}`);
+//greet('Hey')('Jonas') //prints Hey Jonas
 
-    console.log(`Transformed by: ${fn.name}`); 
-}
-// transform this string using the upperFirstWord function 
-transformer('JavaScript is the best', upperFirstWord)
-//prints
-//Original string: JavaScript is the best
-//Transformed string: JAVASCRIPT is the best
-// Transformed by: upperFirstWord. prints the name of the function
+//Challenge - conver to arrow
 
-transformer('JavaScript is the best', oneWord)
+const greet =(greeting)=>(name)=>
+    console.log(`${greeting} ${name}`);   
 
-const high5 = function(){
-    console.log('🖐');
-}
-
-document.body.addEventListener('click', high5)
-
+const greeterHey = greet('Hey')
+greeterHey('Jonas') // prints Hey Jonas
