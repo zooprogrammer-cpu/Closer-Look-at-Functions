@@ -1,21 +1,35 @@
-'use strict';
-// Default Values or Default Parameters in Functions
-const bookings = []
-const createBooking = function (flightNum, numPassengers = 1, price = 199 *numPassengers) {
-    //ES5 way
-    // numPassengers = numPassengers || 1;
-    // price = price || 199;
-    const booking = {
-        flightNum,
-        numPassengers,
-        price
-    };
-    console.log(booking);
-    bookings.push(booking);
+
+// passing arguements - value vs reference
+const flight = 'LH234'
+const jonas = {
+    name: 'Jonas Smith',
+    passport : 23444343434
+};
+
+const checkIn = function(flightNum, passenger){
+    flightNum = 'LH999';
+    passenger.name = 'Mr.' + passenger.name
+
+    if (passenger.passport === 23444343434){
+        alert('Checked in')
+    } else{
+        alert("Wrong passport")
+    }
 }
 
-createBooking('LH123'); //{flightNum: "LH123", numPassengers: 1, price: 199}
-createBooking('LH456', 2 , 899) //{flightNum: "LH456", numPassengers: 2, price: 899}
-createBooking('LH899', 5) //{flightNum: "LH899", numPassengers: 5, price: 995}
-createBooking('LH000', undefined, 9) // this skips the second parameter. 
-//prints {flightNum: "LH000", numPassengers: 1, price: 9}
+// checkIn(flight, jonas)
+// console.log(flight); // prints LH234. Note here that flight which is a primitive did not change value
+// console.log(jonas); // this changed to "Mr. Jonas Smith"
+
+// This is the same as doing
+// const flightNum = flight // this just copies the value
+// const passenger = jonas  // copying the reference in the heap. both point to same object.
+
+//This can cause problems when multiple developers are working
+
+const newPassport = function(person){
+    person.passport = Math.trunc(Math.random()) * 100000000000
+}
+// Two functions are manipluating the same object causing issues
+newPassport(jonas) // this changes the passport for jonas object
+checkIn(flight, jonas) // passes the jonas object with the altered passport value
