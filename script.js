@@ -28,6 +28,7 @@ const book = lufthansa.book;
 //DOES NOT work 
 //book(23, 'Sarah Williams');
 // using call method explicitly calls the book function and passes eurowings object
+// Call  Method
 book.call(eurowings, 23, 'Srarh Williams'); 
 console.log(eurowings);
 book.call(lufthansa, 55, 'Johnny appleseed' );
@@ -39,5 +40,24 @@ const swiss = {
     bookings : []
 
 }
-
 book.call(swiss, 583, 'Mary Cooper'); 
+
+// Apply Method - does not receive arguements but an array
+// Apply is not used anymore
+const flightData = [583, 'George Cooper'];
+book.apply(swiss, flightData); 
+console.log(swiss);
+// with modern javascrip, use call method and spread the array
+book.call(swiss, ...flightData);
+
+// Bind method 
+
+
+console.log(Math.sqrt(25));
+console.log(25 ** (1/2));
+
+console.log(Math.min(5,18,'23'));
+
+console.log(Math.trunc(Math.random() * 6) + 1);
+
+const randomInt = (min, max)=> Math.trunc(Math.random() *(max-min) + 1)
