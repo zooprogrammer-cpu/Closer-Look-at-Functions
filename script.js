@@ -1,116 +1,95 @@
 'use strict';
 
-const lufthansa = {
-    airline: 'lufthansa',
-    iataCode: 'LH',
-    bookings: [],
-    book(flightNum, name) {
-        console.log(
-            `${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`
-            );
-            this.bookings.push({
-            flight: `${this.iataCode} ${flightNum}`, name });
-    }
-}
 
-//lufthansa.book('A500', 'Jonah Schmit');
-//console.log(lufthansa);
+///////////////////////////////////////
+// Coding Challenge #1
 
-const eurowings = {
-    airline: 'Eurowings',
-    iataCode: 'EW',
-    bookings: []
-}
+/* 
+Let's build a simple poll app!
 
-const book = lufthansa.book; // setting lufthansa.book function as a variable 
-//This below DOES NOT work since this is undefined
-//book(23, 'Sarah Williams');
-// Instead use call method. 
-// In the call method, the first arguement is what you want the this keyword to point to. 
-// In this case, this keyword points to eurowings. And then the usual arguements. 
-// call method calls the book function with the this keyword set to eurowings
-// the rest are the regular arguements of the book function
-// Call  Method
-book.call(eurowings, 23, 'Sarah Williams'); // prints Sarah Williams booked a seat on Eurowings flight EW23
-console.log(eurowings); // has one bookings, Sarah Williams
+A poll has a question, an array of options from which people can choose, and an array with the number of replies for each option. This data is stored in the starter object below.
 
-book.call(lufthansa, 55, 'Johnny appleseed' ); //Johnny appleseed booked a seat on lufthansa flight LH55
+Here are your tasks:
 
-book.call(lufthansa, 239, 'Mary Cooper');
-console.log(lufthansa); // has two bookings , Johnny appleseed and Mary Cooper
+1. Create a method called 'registerNewAnswer' on the 'poll' object. The method does 2 things:
+  1.1. Display a prompt window for the user to input the number of the selected option. The prompt should look like this:
+        What is your favourite programming language?
+        0: JavaScript
+        1: Python
+        2: Rust
+        3: C++
+        (Write option number)
+  
+  1.2. Based on the input number, update the answers array. For example, if the option is 3, increase the value AT POSITION 3 of the array by 1. Make sure to check if the input is a number and if the number makes sense (e.g answer 52 wouldn't make sense, right?)
+2. Call this method whenever the user clicks the "Answer poll" button.
+3. Create a method 'displayResults' which displays the poll results. The method takes a string as an input (called 'type'), which can be either 'string' or 'array'. If type is 'array', simply display the results array as it is, using console.log(). This should be the default option. If type is 'string', display a string like "Poll results are 13, 2, 4, 1". 
+4. Run the 'displayResults' method at the end of each 'registerNewAnswer' method call.
 
-// Apply Method - does not receive arguements but an array
-// Apply is not used anymore
-const swiss ={
-    airline : 'Swiss Air Lines',
-    iataCode: 'LX',
-    bookings: []
-};
-const flightData = [583, 'George Cooper'];
-book.apply(swiss, flightData); // first arguement is the this keyword. The second is the array of data
-// prints George Cooper booked a seat on Swiss Air Lines flight LX583
-// console.log(swiss);
-// with modern javascript, use call method and spread the array
-book.call(swiss, ...flightData); //George Cooper booked a seat on Swiss Air Lines flight LX583
+HINT: Use many of the tools you learned about in this and the last section 😉
 
-// Bind method 
-// Also sets the this keyword manually. But Bind immediately does not call the function
-// Instead it returns a functin where the this keword is bound. It is set to whatever value we send to bind
-// Here is the call method from above
-// book.call(eurowings, 23, 'Sarah Williams')
-const bookEW = book.bind(eurowings); // this does not call the book function. 
-//Instead it returns a new function where this is set to eurowings
-// we can bind multiple airlines 
-const bookLH = book.bind(lufthansa);
-const bookLX = book.bind(swiss);
-bookEW(23, 'Steven Williams'); // Here this is already set to eurowings
-// prints Steven Williams booked a seat on Eurowings flight EW23
+BONUS: Use the 'displayResults' method to display the 2 arrays in the test data. Use both the 'array' and the 'string' option. Do NOT put the arrays in the poll object! So what shoud the this keyword look like in this situation?
 
-// We can take it further. Can pass multiple arguements to be more specific.
-const bookEW23 = book.bind(eurowings, 23);
-// no need to pass 23 when creating a new booking
-bookEW23 ('Jonas Samenthal');//Jonas Samenthal booked a seat on Eurowings flight EW23
-bookEW23('Martha Cooper');//Martha Cooper booked a seat on Eurowings flight EW23
-console.log(eurowings.bookings);
-// prints 
-/*
-{flight: 'EW 23', name: 'Sarah Williams'}
-{flight: 'EW 23', name: 'Steven Williams'}
-{flight: 'EW 23', name: 'Jonas Samenthal'}
-{flight: 'EW 23', name: 'Martha Cooper'}
+BONUS TEST DATA 1: [5, 2, 3]
+BONUS TEST DATA 2: [1, 5, 3, 9, 6, 1]
+
+GOOD LUCK 😀
 */
 
-// With Event listeners
-// add a new property to lufthansa object
-lufthansa.planes = 300; 
-lufthansa.buyPlane = function (){
-    console.log(`this:`, this);
-    this.planes ++; 
-    console.log(`this.planes`, this.planes);
-}
-// lufthansa.buyPlane();
-// need to use bind here to point to lufthansa
-//otherwise the this points to the button itself. 
-document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane.bind(lufthansa));
-// clickng the button does this runts the buyPlane function increasing to 301
 
-// Partial application of bind
-const addTax = (rate, value) => value + value * rate;
-console.log(addTax(0.10, 200)); // prints 220
-// we can create a more specific function addVAT based on the general function addTax
-// first arguemnt of bind is this, we set to to null
-const addVAT = addTax.bind(null, 0.23);
-// this is the same as
-// const addVat = value =>  value + value * 0.23; 
-console.log(addVAT(100)); //prints 123
+const poll = {
+    question: 'What is your favourite programming language?',
+    options: [
+        '0 : JavaScript',
+        '1: Python',
+        '2: Rust',
+        '3: C++'
 
-//// same as above but by calling one function by another
-const addTaxRate = function (rate){
-    return function (value){
-        return value + value * rate; 
+    ],
+    answers: new Array(4).fill(0),
+    registerNewAnswer() {
+        // Get answer
+        const answer = Number(
+            prompt(`${this.question}\n${this.options.join('\n')}
+            \n(Write option number)`
+            )
+        );
+        console.log(answer);
+
+        // Register answer - using short circuit check if value enter is below 4
+        typeof answer === 'number' && answer < this.answers.length
+            && this.answers[answer]++;
+
+        this.displayResults();   
+        this.displayResults('string');  
+
+
+    }, 
+
+    displayResults(type ='array'){
+        if(type === 'array'){
+            console.log(this.answers);
+        } else if (type ===  'string'){
+            console.log(`Poll results are ${this.answers.join(', ')}`);
+        }
     }
+
 }
-const addVat2 = addTaxRate(0.23);
-console.log(addVat2(100)); // prints 123
+// run when Answer Poll button is clicked
+// need to bind the this keyword to poll object 
+// and not the button
+document.querySelector('.poll')
+.addEventListener('click', poll.registerNewAnswer
+.bind(poll));
+
+//BONUS: Use call to point to [5, 2, 3] instead of answers array
+let bonusArray = [5,2,3];
+poll.displayResults.call({answers : bonusArray}, 'string');
+//prints Poll results are 5, 2, 3
+
+let bonusArray2 = [1,4,5,6,7,8,9];
+poll.displayResults.call({answers : bonusArray2}, 'string');
+// Poll results are 1, 4, 5, 6, 7, 8, 9
+
+
 
 
